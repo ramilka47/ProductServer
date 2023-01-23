@@ -1,0 +1,3 @@
+package com.flower.server.database.modules.categoryOfProducts
+
+interface IDaoCategoryOfProducts : IDaoCategoryOfProductsGetter, IDaoCategoryOfProductsSetter
