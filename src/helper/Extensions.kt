@@ -1,25 +1,14 @@
 package com.flower.server.helper
 
-import com.flower.server.database.models.User
 import com.flower.server.helper.execeptions.ClientException
 import com.flower.server.helper.execeptions.UserLevelNotAllowedThisAction
 import com.flower.server.helper.Constants.predicateUserAgent
-import com.flower.server.models.IRequest
-import com.flower.server.models.IResponse
+import com.flower.server.web.models.IRequest
+import com.flower.server.web.models.IResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-
-
-
-suspend fun User.levelAllow(predicateLevel : Int, actionName : String, block : suspend()->Unit){
-    if (level >= predicateLevel){
-        block()
-    } else {
-        throw UserLevelNotAllowedThisAction(level, actionName)
-    }
-}
 
 suspend fun ApplicationCall.withError(block : suspend ApplicationCall.()->Unit) {
     try {

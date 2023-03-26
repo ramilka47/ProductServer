@@ -1,12 +1,7 @@
 package com.flower.server
 
-import com.flower.server.database.impl.DatabaseFactory
-import com.flower.server.helper.daoUserSetter
-import com.flower.server.helper.generator
-import com.flower.server.helper.getCurrentTimeInSec
-import com.flower.server.models.request.AddUserRequest
-import com.flower.server.plugins.interactors.PostAddUserInteractor
-import com.flower.server.plugins.route.configureRouting
+import com.flower.server.database_layer.database.impl.DatabaseFactory
+import com.flower.server.web.router.Router
 import io.ktor.client.request.*
 import kotlinx.coroutines.*
 import io.ktor.server.application.*
@@ -22,7 +17,7 @@ fun main(args: Array<String>){/*: Unit = io.ktor.server.netty.EngineMain.main(ar
 fun Application.module(testing : Boolean = false) {
     DatabaseFactory.init()
 
-    CoroutineScope(Dispatchers.IO).launch {
+  /*  CoroutineScope(Dispatchers.IO).launch {
         try {
             val userRequest = AddUserRequest(
                 "Ramil",
@@ -35,43 +30,9 @@ fun Application.module(testing : Boolean = false) {
         } catch (e : Exception){
             System.out.println("LOG_debug: user not added")
         }
-    }
-
-    configureRouting()
-
-    /*configureTemplating()*/
-
-    /*install(Authentication) {
-    }
-
-    install(ContentNegotiation) {
-        gson {
-        }
     }*/
 
-  /*  val client = HttpClient(Jetty) {
-        install(HttpTimeout) {
-        }
-        install(JsonFeature) {
-            serializer = GsonSerializer()
-        }
-        install(Logging) {
-            level = LogLevel.HEADERS
-        }
-        BrowserUserAgent() // install default browser-like user-agent
-        // install(UserAgent) { agent = "some user agent" }
-    }*/
-    runBlocking {
-        // Sample for making a HTTP Client request
-        /*
-        val message = client.post<JsonSampleClass> {
-            url("http://127.0.0.1:8080/path/to/endpoint")
-            contentType(ContentType.Application.Json)
-            body = JsonSampleClass(hello = "world")
-        }
-        */
-    }
-
+    Router()
 }
 
 data class JsonSampleClass(val hello: String)
