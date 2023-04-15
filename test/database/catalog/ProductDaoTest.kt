@@ -41,7 +41,7 @@ class ProductDaoTest {
         runBlocking {
             val product = dao.getProduct("name")
             assert(product != null)
-            val result = dao.updateProduct(id = product!!.id, name = "name", description = "description_update", producer = "producer")
+            val result = dao.updateProduct(id = product!!.id, name = "name", description = "description_update", producer = "producer", gallery = listOf("123", "321"))
             assert(result)
         }
     }

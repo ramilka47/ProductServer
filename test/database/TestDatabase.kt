@@ -1,14 +1,19 @@
 package com.flower.server.database
 
 import com.flower.server.database.models.admin.UserTable
+import com.flower.server.database.models.bonus_club.BonusCardTable
+import com.flower.server.database.models.bonus_club.BonusCountTable
 import com.flower.server.database.models.crm.CustomerTable
+import com.flower.server.database.models.crm.FeedbackTable
+import com.flower.server.database.models.crm.OrderTable
 import com.flower.server.database.models.crm.RelationshipCustomerToOperationTable
 import com.flower.server.database.models.product_info.*
+import com.flower.server.database.models.provider.ProviderTable
+import com.flower.server.database.models.provider.ProviderToProductTable
 import com.flower.server.database.models.storage.*
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
-import javax.xml.crypto.Data
 
 object TestDatabaseFactory {
     fun init(){
@@ -29,8 +34,16 @@ object TestDatabaseFactory {
 
             SchemaUtils.create(CustomerTable)
             SchemaUtils.create(RelationshipCustomerToOperationTable)
+            SchemaUtils.create(OrderTable)
+            SchemaUtils.create(FeedbackTable)
 
             SchemaUtils.create(UserTable)
+
+            SchemaUtils.create(ProviderTable)
+            SchemaUtils.create(ProviderToProductTable)
+
+            SchemaUtils.create(BonusCountTable)
+            SchemaUtils.create(BonusCardTable)
         }
     }
 }

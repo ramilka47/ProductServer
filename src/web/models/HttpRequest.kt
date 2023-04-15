@@ -1,3 +1,3 @@
 package com.flower.server.web.models
 
-class HttpRequest(val token : String, val body : IRequest)
+class HttpRequest<T : IRequest>(val token : String, val body : T)

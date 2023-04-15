@@ -2,6 +2,8 @@ package com.flower.server.database_layer.database.impl
 
 import com.flower.server.database.models.admin.UserTable
 import com.flower.server.database.models.crm.CustomerTable
+import com.flower.server.database.models.crm.FeedbackTable
+import com.flower.server.database.models.crm.OrderTable
 import com.flower.server.database.models.crm.RelationshipCustomerToOperationTable
 import com.flower.server.database.models.product_info.*
 import com.flower.server.database.models.storage.ProductCountTable
@@ -31,6 +33,8 @@ object DatabaseFactory {
 
             SchemaUtils.create(CustomerTable)
             SchemaUtils.create(RelationshipCustomerToOperationTable)
+            SchemaUtils.create(OrderTable)
+            SchemaUtils.create(FeedbackTable)
 
             SchemaUtils.create(UserTable)
         }

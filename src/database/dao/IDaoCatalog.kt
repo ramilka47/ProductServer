@@ -8,7 +8,8 @@ interface ProductDao{
     suspend fun addProduct(name : String,
                            description : String? = null,
                            photo : String? = null,
-                           producer : String? = null) : ProductEntity?
+                           producer : String? = null,
+                           gallery: List<String> = listOf()) : ProductEntity?
 
     suspend fun deleteProduct(product: ProductEntity) : Boolean
 
@@ -22,13 +23,16 @@ interface ProductDao{
                               name : String,
                               description : String? = null,
                               photo : String? = null,
-                              producer : String? = null) : Boolean
+                              producer : String? = null,
+                              gallery : List<String> = listOf()) : Boolean
 
     suspend fun getProduct(id : Long) : ProductEntity?
 
     suspend fun getProduct(name : String) : ProductEntity?
 
     suspend fun getAllProduct() : List<ProductEntity>
+
+    suspend fun getAllProductByIds(ids : List<Long>) : List<ProductEntity>
 }
 
 interface TagDao{
@@ -51,6 +55,8 @@ interface GenreDao{
     suspend fun deleteGenre(id: Long) : Boolean
 
     suspend fun getAllGenres() : List<GenreEntity>
+
+    suspend fun getGenre(id : Long) : GenreEntity?
 
     suspend fun getAllGenresByIds(ids : List<Long>) : List<GenreEntity>
 }

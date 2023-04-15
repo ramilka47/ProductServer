@@ -3,18 +3,21 @@ package com.flower.server.database.dao.impl
 import com.flower.server.database.dao.IDaoCatalog
 import com.flower.server.database.models.product_info.*
 import com.flower.server.database_layer.database.impl.dbQuery
+import com.flower.server.helper.gson
+import com.google.gson.JsonArray
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 
 class CatalogDaoImpl : IDaoCatalog {
 
-    override suspend fun addProduct(name: String, description: String?, photo: String?, producer: String?): ProductEntity? = dbQuery {
+    override suspend fun addProduct(name: String, description: String?, photo: String?, producer: String?, gallery : List<String>): ProductEntity? = dbQuery {
         val insertStatement = ProductsTable.insert { statement->
             statement[ProductsTable.name] = name
             statement[ProductsTable.description] = description
             statement[ProductsTable.photo] = photo
             statement[ProductsTable.producer] = producer
+            statement[ProductsTable.gallery] = gson.toJson(gallery)
         }
 
         insertStatement.resultedValues?.singleOrNull()?.let(::resultRowToProducts)
@@ -109,13 +112,15 @@ class CatalogDaoImpl : IDaoCatalog {
         name: String,
         description: String?,
         photo: String?,
-        producer: String?
+        producer: String?,
+        gallery : List<String>
     ): Boolean = dbQuery {
         ProductsTable.update({ ProductsTable.id eq id }){ statement->
             statement[ProductsTable.name] = name
             statement[ProductsTable.description] = description
             statement[ProductsTable.photo] = photo
             statement[ProductsTable.producer] = producer
+            statement[ProductsTable.gallery] = gson.toJson(gallery)
         } > 0
     }
 
@@ -138,6 +143,10 @@ class CatalogDaoImpl : IDaoCatalog {
             ?.let { resultRowToProducts(it) }
     }
 
+    override suspend fun getGenre(id: Long): GenreEntity? = dbQuery {
+        GenreTable.select { GenreTable.id eq id }.singleOrNull()?.let { resultRowToGenres(it) }
+    }
+
     override suspend fun getProduct(name: String): ProductEntity? = dbQuery {
         ProductsTable
             .select { ProductsTable.name regexp name }
@@ -147,6 +156,12 @@ class CatalogDaoImpl : IDaoCatalog {
     override suspend fun getAllProduct(): List<ProductEntity> = dbQuery {
         ProductsTable
             .selectAll()
+            .map(::resultRowToProducts)
+    }
+
+    override suspend fun getAllProductByIds(ids: List<Long>): List<ProductEntity> = dbQuery {
+        ProductsTable
+            .select { ProductsTable.id inList ids }
             .map(::resultRowToProducts)
     }
 
@@ -191,7 +206,8 @@ class CatalogDaoImpl : IDaoCatalog {
         name = row[ProductsTable.name],
         description = row[ProductsTable.description],
         photo = row[ProductsTable.photo],
-        producer = row[ProductsTable.producer]
+        producer = row[ProductsTable.producer],
+        gallery = gson.fromJson(row[ProductsTable.gallery], JsonArray::class.java).map { it.asString }
     )
 
     private fun resultRowToTags(row: ResultRow) = TagEntity(

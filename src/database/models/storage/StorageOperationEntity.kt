@@ -4,7 +4,7 @@ import org.jetbrains.exposed.sql.Table
 
 data class StorageOperationEntity(val id : Long,
                                   val productId : Long,
-                                  val operation : String,
+                                  val operation : StorageOperationEnum,
                                   val count : Int,
                                   val price : Double,
                                   val date : Long)
@@ -21,5 +21,5 @@ object StorageOperationTable : Table(){
 }
 
 enum class StorageOperationEnum{
-    BUY, SALE, WRITE_OFF, RETURN, RESERVE
+    BUY, SALE, WRITE_OFF, RETURN, RESERVE;
 }

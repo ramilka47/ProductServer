@@ -59,6 +59,16 @@ class GenreDaoTest {
     }
 
     @Test
+    fun getGenre(){
+        runBlocking {
+            val genre = dao.getAllGenres().firstOrNull()
+            assert(genre != null)
+            val result = dao.getGenre(genre!!.id)
+            assert(result != null)
+        }
+    }
+
+    @Test
     fun getAllGenres(){
         runBlocking {
             val genre = dao.getAllGenres()

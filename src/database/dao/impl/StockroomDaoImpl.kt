@@ -130,7 +130,7 @@ class StockroomDaoImpl : IStockroomDao {
     private fun resultToStorageOperation(row: ResultRow) = StorageOperationEntity(
         id = row[StorageOperationTable.id],
         productId = row[StorageOperationTable.productId],
-        operation = row[StorageOperationTable.operation],
+        operation = StorageOperationEnum.valueOf(row[StorageOperationTable.operation]),
         count = row[StorageOperationTable.count],
         price = row[StorageOperationTable.price],
         date = row[StorageOperationTable.date]
