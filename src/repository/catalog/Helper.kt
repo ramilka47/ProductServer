@@ -25,8 +25,11 @@ internal suspend fun getGenres(productIds : List<Long>, relationshipProductToGen
 internal suspend fun getTags(productIds : List<Long>, relationshipProductToTagDao: RelationshipProductToTagDao, tagDao: TagDao) : Map<Long, List<Tag>> {
     val map = hashMapOf<Long, List<Tag>>()
     productIds.forEach { id ->
-        map[id] = tagDao.getAllTagsById(
-            relationshipProductToTagDao.getAllRelationshipTagByProduct(id).map { it.productId }
+        map[id] = tagDao
+            .getAllTagsByIds(
+                relationshipProductToTagDao
+                    .getAllRelationshipTagByProduct(id)
+                    .map { it.productId }
         ).map { tag-> tag.toTag() }
     }
     return map

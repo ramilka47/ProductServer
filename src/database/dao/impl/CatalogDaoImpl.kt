@@ -147,10 +147,20 @@ class CatalogDaoImpl : IDaoCatalog {
         GenreTable.select { GenreTable.id eq id }.singleOrNull()?.let { resultRowToGenres(it) }
     }
 
+    override suspend fun getTag(id: Long): TagEntity? = dbQuery {
+        TagTable.select { TagTable.id eq id }.singleOrNull()?.let { resultRowToTags(it) }
+    }
+
     override suspend fun getProduct(name: String): ProductEntity? = dbQuery {
         ProductsTable
             .select { ProductsTable.name regexp name }
             .singleOrNull()?.let { resultRowToProducts(it) }
+    }
+
+    override suspend fun getProducts(name: String): List<ProductEntity> = dbQuery {
+        ProductsTable
+            .select { ProductsTable.name regexp name }
+            .map { resultRowToProducts(it) }
     }
 
     override suspend fun getAllProduct(): List<ProductEntity> = dbQuery {
@@ -181,7 +191,7 @@ class CatalogDaoImpl : IDaoCatalog {
         GenreTable.select{ GenreTable.id inList ids }.map(::resultRowToGenres)
     }
 
-    override suspend fun getAllTagsById(ids: List<Long>): List<TagEntity> = dbQuery {
+    override suspend fun getAllTagsByIds(ids: List<Long>): List<TagEntity> = dbQuery {
         TagTable.select{ TagTable.id inList ids }.map(::resultRowToTags)
     }
 

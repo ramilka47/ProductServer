@@ -16,8 +16,8 @@ class TagDaoTest {
     fun before(){
         TestDatabaseFactory.init()
         runBlocking {
-            val genre = dao.addTag("name")
-            assert(genre != null)
+            val tag = dao.addTag("name")
+            assert(tag != null)
         }
     }
 
@@ -31,47 +31,56 @@ class TagDaoTest {
     }
 
     @Test
-    fun addGenre(){
+    fun getTag(){
         runBlocking {
-            val genre = dao.addTag("name")
-            assert(genre != null)
+            val tag = dao.getAllTags().firstOrNull()
+            assert(tag != null)
+            assert(dao.getTag(tag!!.id) != null)
         }
     }
 
     @Test
-    fun updateGenre(){
+    fun addTag(){
         runBlocking {
-            val genre = dao.getAllTags().firstOrNull()
-            assert(genre != null)
-            val res = dao.updateTag(genre!!.id, "name1")
+            val tag = dao.addTag("name")
+            assert(tag != null)
+        }
+    }
+
+    @Test
+    fun updateTag(){
+        runBlocking {
+            val tag = dao.getAllTags().firstOrNull()
+            assert(tag != null)
+            val res = dao.updateTag(tag!!.id, "name1")
             assert(res)
         }
     }
 
     @Test
-    fun deleteGenre(){
+    fun deleteTag(){
         runBlocking {
-            val genre = dao.getAllTags().firstOrNull()
-            assert(genre != null)
-            val result = dao.deleteTag(genre!!.id)
+            val tag = dao.getAllTags().firstOrNull()
+            assert(tag != null)
+            val result = dao.deleteTag(tag!!.id)
             assert(result)
         }
     }
 
     @Test
-    fun getAllGenres(){
+    fun getAllTags(){
         runBlocking {
-            val genre = dao.getAllTags()
-            assert(genre.isNotEmpty())
+            val tag = dao.getAllTags()
+            assert(tag.isNotEmpty())
         }
     }
 
     @Test
-    fun getAllGenresByIds(){
+    fun getAllTagsByIds(){
         runBlocking {
-            val genre = dao.getAllTags().firstOrNull()
-            assert(genre != null)
-            val result = dao.getAllTagsById(listOf(genre!!.id))
+            val tag = dao.getAllTags().firstOrNull()
+            assert(tag != null)
+            val result = dao.getAllTagsByIds(listOf(tag!!.id))
             assert(result.isNotEmpty())
         }
     }

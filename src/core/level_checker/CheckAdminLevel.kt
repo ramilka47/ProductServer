@@ -1,8 +1,9 @@
 package com.flower.server.core.level_checker
 
+import com.flower.server.helper.ADMIN_LEVEL
+
 object CheckAdminLevel : ILevelCheckCompositor {
 
-    override fun check(level: Int): Boolean {
-        TODO("Not yet implemented")
-    }
+    override fun check(level: Int): Boolean =
+        level >= ADMIN_LEVEL
 }

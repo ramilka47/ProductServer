@@ -10,7 +10,7 @@ interface UseCase<T : IRequest, R : IResponse<T>> {
     suspend fun getResponse(request: T, token : String? = null) : R
 }
 
-suspend fun <T : IRequest, R : IResponse<T>> UseCase<T, R>.getUser(userDao: UserDao, token: String?) : UserEntity {
+internal suspend fun <T : IRequest, R : IResponse<T>> UseCase<T, R>.getUser(userDao: UserDao, token: String?) : UserEntity {
     return userDao.getUserByToken(token ?: throw BadUserTokenException()) ?: throw BadUserTokenException()
 }
 

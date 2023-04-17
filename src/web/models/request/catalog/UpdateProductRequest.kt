@@ -7,4 +7,5 @@ data class UpdateProductRequest(val id : Long,
                                 val description : String? = null,
                                 val photo : String? = null,
                                 val producer : String? = null,
-                                val gallery : List<String>) : IRequest
+                                val gallery : List<String> = listOf()
+) : IRequest

@@ -7,11 +7,13 @@ interface ICrmDao : CustomerDao, RelationshipCustomerToOperationDao, OrderDao, F
 
 interface CustomerDao{
 
-    suspend fun addCustomer(name : String? = null, phone : String? = null, address : String? = null, scores : Int? = null) : CustomerEntity?
+    suspend fun addCustomer(name : String? = null, phone : String? = null, address : String? = null) : CustomerEntity?
 
-    suspend fun updateCustomer(id : Long, name : String? = null, phone : String? = null, address : String? = null, scores : Int? = null) : Boolean
+    suspend fun updateCustomer(id : Long, name : String? = null, phone : String? = null, address : String? = null) : Boolean
 
     suspend fun getCustomer(id : Long) : CustomerEntity?
+
+    suspend fun getCustomer(name : String) : CustomerEntity?
 
     suspend fun getAllCustomer() : List<CustomerEntity>
 

@@ -114,6 +114,12 @@ class StockroomDaoImpl : IStockroomDao {
         } > 0
     }
 
+    override suspend fun updateOperation(id: Long, operation: StorageOperationEnum): Boolean = dbQuery {
+        StorageOperationTable.update({ StorageOperationTable.id eq id}){ statement->
+            statement[StorageOperationTable.operation] = operation.name
+        } > 0
+    }
+
     override suspend fun getStorageProductData(productId: Long): StorageProductDataEntity? = dbQuery {
         StorageProductDataTable.select { StorageProductDataTable.productId eq productId }.singleOrNull()?.let { resultToStorageProductData(it) }
     }

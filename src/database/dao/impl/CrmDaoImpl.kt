@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class CrmDaoImpl : ICrmDao {
 
-    override suspend fun addCustomer(name: String?, phone: String?, address: String?, scores: Int?): CustomerEntity? = dbQuery {
+    override suspend fun addCustomer(name: String?, phone: String?, address: String?): CustomerEntity? = dbQuery {
         val insertStatement = CustomerTable.insert { statement->
             statement[CustomerTable.name] = name
             statement[CustomerTable.phone] = phone
@@ -69,8 +69,7 @@ class CrmDaoImpl : ICrmDao {
         id: Long,
         name: String?,
         phone: String?,
-        address: String?,
-        scores: Int?
+        address: String?
     ): Boolean = dbQuery {
         CustomerTable.update({ CustomerTable.id eq id }){ statement->
             name?.let { statement[CustomerTable.name] = name }
@@ -117,6 +116,10 @@ class CrmDaoImpl : ICrmDao {
 
     override suspend fun getCustomer(id: Long): CustomerEntity? = dbQuery { 
         CustomerTable.select { CustomerTable.id eq id }.singleOrNull()?.let { resultCustomer(it) }
+    }
+
+    override suspend fun getCustomer(name: String): CustomerEntity? = dbQuery {
+        CustomerTable.select { CustomerTable.name eq name }.singleOrNull()?.let { resultCustomer(it) }
     }
 
     override suspend fun getOrder(id: Long): OrderEntity? = dbQuery {

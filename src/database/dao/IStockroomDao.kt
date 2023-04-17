@@ -30,9 +30,9 @@ interface StorageOperationDao{
                 date : Long) : StorageOperationEntity?
 
     suspend fun addWriteOff(productId : Long,
-                    count : Int,
-                    price : Double,
-                    date : Long) : StorageOperationEntity?
+                            count : Int,
+                            price : Double,
+                            date : Long) : StorageOperationEntity?
 
     suspend fun addReturn(productId : Long,
                           count : Int,
@@ -43,6 +43,8 @@ interface StorageOperationDao{
                            count : Int,
                            price : Double,
                            date : Long) : StorageOperationEntity?
+
+    suspend fun updateOperation(id : Long, operation : StorageOperationEnum) : Boolean
 
     suspend fun deleteOperation(id : Long) : Boolean
 

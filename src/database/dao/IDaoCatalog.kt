@@ -30,6 +30,8 @@ interface ProductDao{
 
     suspend fun getProduct(name : String) : ProductEntity?
 
+    suspend fun getProducts(name : String) : List<ProductEntity>
+
     suspend fun getAllProduct() : List<ProductEntity>
 
     suspend fun getAllProductByIds(ids : List<Long>) : List<ProductEntity>
@@ -44,7 +46,9 @@ interface TagDao{
 
     suspend fun getAllTags() : List<TagEntity>
 
-    suspend fun getAllTagsById(ids : List<Long>) : List<TagEntity>
+    suspend fun getTag(id : Long) : TagEntity?
+
+    suspend fun getAllTagsByIds(ids : List<Long>) : List<TagEntity>
 }
 
 interface GenreDao{

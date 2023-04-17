@@ -19,7 +19,7 @@ class DeleteTagUseCase(private val tagDao : TagDao,
         val user = getUser(userDao, token)
 
         return iLevelCheckCompositor.check(user.level){
-            if (tagDao.deleteTag(request.id)){
+            if (!tagDao.deleteTag(request.id)){
                 throw ServerException("can't delete tag")
             }
             DeleteTagResponse(true)
