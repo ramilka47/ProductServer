@@ -40,6 +40,16 @@ class CustomerDaoTest {
     }
 
     @Test
+    fun getCustomerByName(){
+        runBlocking {
+            val tmp = dao.getAllCustomer().firstOrNull()
+            assert(tmp != null)
+            val result = dao.getCustomer(tmp!!.name!!)
+            assert(result != null)
+        }
+    }
+
+    @Test
     fun getAllCustomer(){
         runBlocking {
             assert(dao.getAllCustomer().isNotEmpty())

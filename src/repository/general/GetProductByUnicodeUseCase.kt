@@ -6,8 +6,8 @@ import com.flower.server.helper.execeptions.RequestException
 import com.flower.server.repository.UseCase
 import com.flower.server.repository.catalog.GetProductInfoUseCase
 import com.flower.server.web.models.request.IdRequest
-import com.flower.server.web.models.request.stockroom.GetProductByUnicodeRequest
-import com.flower.server.web.models.response.stockroom.GetProductByUnicodeResponse
+import com.flower.server.web.models.request.general.GetProductByUnicodeRequest
+import com.flower.server.web.models.response.general.GetProductByUnicodeResponse
 import com.flower.server.web.models.response.stockroom.Product
 import java.rmi.ServerException
 

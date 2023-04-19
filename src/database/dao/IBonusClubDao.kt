@@ -14,6 +14,8 @@ interface BonusCardDao{
 
     suspend fun deleteBonusCard(id : Long) : Boolean
 
+    suspend fun getBonusCard(name : String) : BonusCardEntity?
+
     suspend fun getBonusCard(id : Long) : BonusCardEntity?
 
     suspend fun getAllBonusCards() : List<BonusCardEntity>

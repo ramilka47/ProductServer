@@ -1,4 +1,4 @@
-package com.flower.server.web.models.request.stockroom
+package com.flower.server.web.models.request.general
 
 import com.flower.server.web.models.IRequest
 

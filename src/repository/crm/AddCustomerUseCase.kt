@@ -7,7 +7,7 @@ import java.rmi.ServerException
 
 class AddCustomerUseCase(private val customerDao : CustomerDao) {
 
-    suspend fun execute(name : String? = null, phone : String? = null, address : String? = null) : Customer =
+    suspend fun execute(name : String, phone : String? = null, address : String? = null) : Customer =
         customerDao.addCustomer(name = name, phone = phone, address = address)?.toCustomer()
             ?: throw ServerException("can't add customer")
 }

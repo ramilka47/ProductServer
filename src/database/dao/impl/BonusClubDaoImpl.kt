@@ -54,6 +54,10 @@ class BonusClubDaoImpl : IBonusClubDao {
         BonusCardTable.select { BonusCardTable.id eq id }.singleOrNull()?.let { resultToBonusCard(it) }
     }
 
+    override suspend fun getBonusCard(name: String): BonusCardEntity? = dbQuery {
+        BonusCardTable.select { BonusCardTable.name eq name }.singleOrNull()?.let { resultToBonusCard(it) }
+    }
+
     override suspend fun getBonusCount(bonusCardId: Long): BonusCountEntity? = dbQuery {
         BonusCountTable.select { BonusCountTable.bonusCardId eq bonusCardId }.singleOrNull()?.let { resultToBonusCount(it) }
     }

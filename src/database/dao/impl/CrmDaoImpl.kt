@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class CrmDaoImpl : ICrmDao {
 
-    override suspend fun addCustomer(name: String?, phone: String?, address: String?): CustomerEntity? = dbQuery {
+    override suspend fun addCustomer(name: String, phone: String?, address: String?): CustomerEntity? = dbQuery {
         val insertStatement = CustomerTable.insert { statement->
             statement[CustomerTable.name] = name
             statement[CustomerTable.phone] = phone
