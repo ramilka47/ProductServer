@@ -8,7 +8,7 @@ class DeleteProviderToProductUseCase(private val providerToProductDao : Provider
     suspend fun execute(id : Long) =
         providerToProductDao.deleteProviderToProduct(id).apply {
             if (!this){
-                throw RequestException("can't delete relationship provider to product")
+                throw RequestException("bad relationship provider to product id=$id")
             }
         }
 }

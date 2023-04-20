@@ -13,19 +13,28 @@ import java.rmi.ServerException
 
 class AddBonusCardUseCase(private val bonusCardDao: BonusCardDao,
                           private val userDao: UserDao,
-                          private val iLevelCheckCompositor: ILevelCheckCompositor,
+                          private val iLevelCheckCompositor: ILevelCheckCompositor? = null,
                           private val addBonusCountUseCase : AddBonusCountUseCase) : UseCase<AddBonusCardRequest, AddBonusCardResponse> {
 
     override suspend fun getResponse(request: AddBonusCardRequest, token: String?): AddBonusCardResponse{
         val user = getUser(userDao, token)
 
-        return iLevelCheckCompositor.check(user.level){
+        val consumer : suspend () -> AddBonusCardResponse = {
+            val card = bonusCardDao.addBonusCard(
+                name = user.login,
+                active = request.active
+            ) ?: throw ServerException("can't add card name=${request.name}")
+            val count = addBonusCountUseCase.execute(card.id, 0.0)
+            AddBonusCardResponse(BonusCard(id = card.id, name = card.name, active = card.active, count = count.bonus))
+        }
+
+        return iLevelCheckCompositor?.check(user.level){
             val card = bonusCardDao.addBonusCard(
                 name = request.name ?: user.login,
                 active = request.active
             ) ?: throw ServerException("can't add card name=${request.name}")
             val count = addBonusCountUseCase.execute(card.id, 0.0)
             AddBonusCardResponse(BonusCard(id = card.id, name = card.name, active = card.active, count = count.bonus))
-        }
+        } ?: consumer()
     }
 }

@@ -7,10 +7,7 @@ import com.flower.server.database.TestDatabaseFactory
 import com.flower.server.database.dao.impl.AdminDaoImpl
 import com.flower.server.database.dao.impl.CrmDaoImpl
 import com.flower.server.helper.DEVELOPER_LEVEL
-import com.flower.server.repository.crm.AddCustomerUseCase
-import com.flower.server.repository.crm.GetCustomerByIdUseCase
-import com.flower.server.repository.crm.GetCustomerByNameUseCase
-import com.flower.server.repository.crm.UpdateCustomerUseCase
+import com.flower.server.repository.crm.*
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Assert.assertThrows
@@ -29,7 +26,6 @@ class CrmUseCasesTest {
     private val userDao = AdminDaoImpl()
     private val generator : IGenerator = Generator()
     private val token = generator.generateToken()
-    private val loginPasswordCheckChars = LoginPasswordCheckChars()
 
     private val crmDao = CrmDaoImpl()
 
@@ -38,8 +34,10 @@ class CrmUseCasesTest {
         TestDatabaseFactory.init()
         runBlocking {
             val user = userDao.addUser(NAME, LOGIN, PASSWORD, DEVELOPER_LEVEL, token)
+            val customer = crmDao.addCustomer(user!!.login)
             assert(user != null)
-            assert(crmDao.addCustomer(user!!.login) != null)
+            assert(customer != null)
+            assert(crmDao.addCustomerToOperation(customer!!.id, 1) != null)
         }
     }
 
@@ -74,7 +72,7 @@ class CrmUseCasesTest {
 
         assertThrows(ServerException::class.java){
             runBlocking {
-                assert(useCase.execute(id = Long.MIN_VALUE, phone = "new value 2"))
+                useCase.execute(id = Long.MIN_VALUE, phone = "new value 2")
             }
         }
     }
@@ -101,7 +99,7 @@ class CrmUseCasesTest {
 
         runBlocking {
             val customers = crmDao.getAllCustomer().first()
-            assert(useCase.execute(customers.name!!).id == customers.id)
+            assert(useCase.execute(customers.name).id == customers.id)
         }
 
         assertThrows(ServerException::class.java){
@@ -111,6 +109,23 @@ class CrmUseCasesTest {
         }
     }
 
+    @Test
+    fun getAllRelationshipCustomerToOperationUseCase(){
+        val useCase = GetAllRelationshipCustomerToOperationUseCase(crmDao)
 
+        runBlocking {
+            val customers = crmDao.getAllCustomer().first()
+            assert(useCase.execute().isNotEmpty())
+        }
+    }
 
+    @Test
+    fun getAllRelationshipForCustomerUseCase(){
+        val useCase = GetAllRelationshipForCustomerUseCase(crmDao)
+
+        runBlocking {
+            val customers = crmDao.getAllCustomer().first()
+            assert(useCase.execute(customers.id).isNotEmpty())
+        }
+    }
 }

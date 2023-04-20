@@ -12,7 +12,7 @@ class UpdateCustomerUseCase(private val customerDao : CustomerDao) {
             phone = phone,
             address = address
         ).apply {
-            if (!this && customerDao.getCustomer(id) != null)
+            if (!this && customerDao.getCustomer(id) == null)
                 throw ServerException("can't update customer")
         }
 }

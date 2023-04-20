@@ -31,7 +31,10 @@ class UpdateProviderUseCase(private val providerDao : ProviderDao,
                     providerDao.getProvider(request.id)?.toProvider()
                         ?: throw RequestException("bad provider id=${request.id}")
                 else
-                    throw ServerException("can't update provider id=${request.id}")
+                    providerDao.getProvider(request.id)?.let {
+                        throw ServerException("can't update provider id=${request.id}")
+                    }
+                        ?: throw RequestException("bad provider id=${request.id}")
             )
         }
 }
