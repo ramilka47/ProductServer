@@ -11,5 +11,5 @@ class GetProductCountUseCase(private val countDao: CountDao) : UseCase<IdRequest
 
     override suspend fun getResponse(request: IdRequest, token: String?): GetProductCountResponse =
         GetProductCountResponse(countDao.getCount(request.id)?.toProductCount()
-            ?: throw RequestException("count is null for this id"))
+            ?: throw RequestException("count is null for this id=${request.id}"))
 }

@@ -1,4 +1,4 @@
-package com.flower.server.repository.stockroom
+package com.flower.server.repository.general
 
 import com.flower.server.core.level_checker.ILevelCheckCompositor
 import com.flower.server.core.level_checker.check
