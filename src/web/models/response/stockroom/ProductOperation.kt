@@ -4,7 +4,7 @@ import com.flower.server.database.models.storage.StorageOperationEntity
 import com.flower.server.database.models.storage.StorageOperationEnum
 
 data class ProductOperation(val id : Long,
-                            val productId : Long,
+                            val productOperationIds : List<Long>,
                             val operation : Operation,
                             val count : Int,
                             val price : Double,
@@ -15,7 +15,7 @@ enum class Operation{
 }
 
 internal fun StorageOperationEntity.toProductOperation() = ProductOperation(
-    id = id, productId = productId, operation = operation.toOperation(), count = count, price = price, date = date
+    id = id, productOperationIds = operationPositions, operation = operation.toOperation(), count = count, price = price, date = date
 )
 
 internal fun StorageOperationEnum.toOperation() =

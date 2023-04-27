@@ -37,6 +37,7 @@ class GetProductStockroomUseCase(
                 count.count,
                 data.uniCode,
                 data.price,
+                data.salePrice,
                 data.discount
             )
         )

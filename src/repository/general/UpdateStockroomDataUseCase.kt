@@ -23,6 +23,7 @@ class UpdateStockroomDataUseCase(
             if (!storageProductDataDao.updateStorageProductData(
                     request.productId,
                     request.price,
+                    request.salePrice,
                     request.discount,
                     request.unicode
                 ))

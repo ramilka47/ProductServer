@@ -3,7 +3,7 @@ package com.flower.server.database.models.storage
 import org.jetbrains.exposed.sql.Table
 
 data class StorageOperationEntity(val id : Long,
-                                  val productId : Long,
+                                  val operationPositions : List<Long>,
                                   val operation : StorageOperationEnum,
                                   val count : Int,
                                   val price : Double,
@@ -11,7 +11,7 @@ data class StorageOperationEntity(val id : Long,
 
 object StorageOperationTable : Table(){
     val id = long("id").autoIncrement()
-    val productId = long("productId")
+    val operationPositions = text("productOperationIds")
     val operation = varchar("operation", 20)
     val count = integer("count")
     val price = double("price")

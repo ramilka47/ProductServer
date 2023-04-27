@@ -14,4 +14,5 @@ data class Product(val id : Long,
                    val count : Int = 0,
                    val unicode : String = "",
                    val price : Double? = null,
+                   val salePrice : Double? = null,
                    val discount : Float? = null)

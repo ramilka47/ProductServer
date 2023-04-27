@@ -25,6 +25,8 @@ interface RelationshipCustomerToOperationDao{
 
     suspend fun getCustomerToOperation(id : Long) : RelationshipCustomerToOperationEntity?
 
+    suspend fun getByOperationId(operationId: Long) : RelationshipCustomerToOperationEntity?
+
     suspend fun getAllCustomerToOperation() : List<RelationshipCustomerToOperationEntity>
 
     suspend fun getAllCustomerToOperationByCustomerId(customerId : Long) : List<RelationshipCustomerToOperationEntity>

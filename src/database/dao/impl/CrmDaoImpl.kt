@@ -167,6 +167,12 @@ class CrmDaoImpl : ICrmDao {
             ?.let { resultToCustomerToOperation(it) }
     }
 
+    override suspend fun getByOperationId(operationId: Long): RelationshipCustomerToOperationEntity? = dbQuery {
+        RelationshipCustomerToOperationTable.select { RelationshipCustomerToOperationTable.operationId eq operationId }
+            .singleOrNull()
+            ?.let { resultToCustomerToOperation(it) }
+    }
+
     override suspend fun getAllCustomerToOperation(): List<RelationshipCustomerToOperationEntity> = dbQuery {
         RelationshipCustomerToOperationTable.selectAll().map(::resultToCustomerToOperation)
     }

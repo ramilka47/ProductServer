@@ -16,11 +16,11 @@ class StorageOperationDaoTest {
     fun before(){
         TestDatabaseFactory.init()
         runBlocking {
-            assert(dao.addBuy(1, 1, 1.0, 1) != null)
-            assert(dao.addSale(1, 1, 1.0, 1) != null)
-            assert(dao.addWriteOff(1, 1, 1.0, 1) != null)
-            assert(dao.addReturn(1, 1, 1.0, 1) != null)
-            assert(dao.addReserve(1, 1, 1.0, 1) != null)
+            assert(dao.addBuy(listOf(1), 1, 1.0, 1) != null)
+            assert(dao.addSale(listOf(1), 1, 1.0, 1) != null)
+            assert(dao.addWriteOff(listOf(1), 1, 1.0, 1) != null)
+            assert(dao.addReturn(listOf(1), 1, 1.0, 1) != null)
+            assert(dao.addReserve(listOf(1), 1, 1.0, 1) != null)
         }
     }
 

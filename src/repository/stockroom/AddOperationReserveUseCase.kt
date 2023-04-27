@@ -1,6 +1,7 @@
 package com.flower.server.repository.stockroom
 
 import com.flower.server.database.dao.CountDao
+import com.flower.server.database.dao.OperationPositionDao
 import com.flower.server.database.dao.ProductDao
 import com.flower.server.database.dao.StorageOperationDao
 import com.flower.server.helper.execeptions.RequestException
@@ -9,21 +10,24 @@ import com.flower.server.web.models.response.stockroom.toProductOperation
 import java.rmi.ServerException
 
 class AddOperationReserveUseCase(private val productDao: ProductDao,
-                                 private val productCountDao: CountDao,
-                                 private val updateProductCountUseCase: UpdateProductCountUseCase,
+                                 private val addOperationPositionUseCase: AddOperationPositionUseCase,
                                  private val storageOperationDao : StorageOperationDao
 ) {
 
-    suspend fun execute(productId : Long, count : Int, price : Double, date : Long) : ProductOperation {
-        if (productDao.getProduct(productId) == null)
+    suspend fun execute(positions : List<Pair<Long, Int>>, count : Int, price : Double, date : Long) : ProductOperation {
+        val products = productDao.getAllProductByIds(positions.map { it.first })
+        if (products.size != positions.size)
             throw RequestException("product with this id not found")
 
-        val countEntity = productCountDao.getCount(productId) ?: throw ServerException("count is not added for product=$productId")
-        if (countEntity.count - count < 0){
-            throw RequestException("operation reserve is bad. count in stockroom is so few. try less of count")
+        return (storageOperationDao.addBuy(
+            operationPositions = addOperationPositionUseCase
+                .execute(positions)
+                .map { it.id },
+            count = count,
+            price = price,
+            date = date
+        )?.toProductOperation()
+            ?: throw ServerException("can't add operation")).apply {
         }
-
-        return storageOperationDao.addReserve(productId, count, price, date)?.toProductOperation()
-            ?: throw ServerException("can't add operation")
     }
 }

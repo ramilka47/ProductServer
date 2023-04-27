@@ -6,4 +6,8 @@ object Logger {
 
     }
 
+    fun logCustomerByNameIsNull(customerName : String){
+
+    }
+
 }

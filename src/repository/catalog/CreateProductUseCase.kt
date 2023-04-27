@@ -35,6 +35,7 @@ class CreateProductUseCase(private val productDao: ProductDao,
             val data = storageProductDataDao.addStorageProductData(
                 productId = product.id,
                 price = request.price ?: 0.0,
+                salePrice = request.salePrice ?: 0.0,
                 discount = request.discount ?: 0f,
                 uniCode = request.unicode ?: ""
             )!!

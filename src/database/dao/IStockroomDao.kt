@@ -1,11 +1,8 @@
 package com.flower.server.database.dao
 
-import com.flower.server.database.models.storage.ProductCountEntity
-import com.flower.server.database.models.storage.StorageOperationEntity
-import com.flower.server.database.models.storage.StorageOperationEnum
-import com.flower.server.database.models.storage.StorageProductDataEntity
+import com.flower.server.database.models.storage.*
 
-interface IStockroomDao : CountDao, StorageOperationDao, StorageProductDataDao
+interface IStockroomDao : CountDao, StorageOperationDao, StorageProductDataDao, OperationPositionDao
 
 interface CountDao{
 
@@ -15,31 +12,32 @@ interface CountDao{
 
     suspend fun getCount(productId: Long) : ProductCountEntity?
 
+    suspend fun getCount(productIds : List<Long>) : List<ProductCountEntity>
 }
 
 interface StorageOperationDao{
 
-    suspend fun addBuy(productId : Long,
-               count : Int,
-               price : Double,
-               date : Long) : StorageOperationEntity?
+    suspend fun addBuy(operationPositions : List<Long>,
+                       count : Int,
+                       price : Double,
+                       date : Long) : StorageOperationEntity?
 
-    suspend fun addSale(productId : Long,
-                count : Int,
-                price : Double,
-                date : Long) : StorageOperationEntity?
+    suspend fun addSale(operationPositions : List<Long>,
+                        count : Int,
+                        price : Double,
+                        date : Long) : StorageOperationEntity?
 
-    suspend fun addWriteOff(productId : Long,
+    suspend fun addWriteOff(operationPositions : List<Long>,
                             count : Int,
                             price : Double,
                             date : Long) : StorageOperationEntity?
 
-    suspend fun addReturn(productId : Long,
+    suspend fun addReturn(operationPositions : List<Long>,
                           count : Int,
                           price : Double,
                           date : Long) : StorageOperationEntity?
 
-    suspend fun addReserve(productId : Long,
+    suspend fun addReserve(operationPositions : List<Long>,
                            count : Int,
                            price : Double,
                            date : Long) : StorageOperationEntity?
@@ -60,21 +58,40 @@ interface StorageOperationDao{
 
     suspend fun getAllReserved() : List<StorageOperationEntity>
 
+    suspend fun getOperation(id : Long) : StorageOperationEntity?
+
     suspend fun getAllOperationsByIds(ids : List<Long>) : List<StorageOperationEntity>
 
+}
+
+interface OperationPositionDao{
+
+    suspend fun addOperationPosition(productId: Long, count : Int) : OperationPositionEntity?
+
+    suspend fun deleteOperationPosition(id : Long) : Boolean
+
+    suspend fun updateOperationPosition(id : Long, productId: Long? = null, count: Int? = null) : Boolean
+
+    suspend fun getAllOperationPosition() : List<OperationPositionEntity>
+
+    suspend fun getAllOperationPosition(ids : List<Long>) : List<OperationPositionEntity>
 }
 
 interface StorageProductDataDao{
 
     suspend fun addStorageProductData(productId : Long,
-                              price : Double,
-                              discount : Float,
-                              uniCode : String) : StorageProductDataEntity?
+                                      price : Double,
+                                      salePrice : Double,
+                                      discount : Float,
+                                      uniCode : String) : StorageProductDataEntity?
 
     suspend fun updateStorageProductData(productId : Long,
-                                 price : Double? = null,
-                                 discount : Float? = null,
-                                 uniCode : String? = null) : Boolean
+                                         price : Double? = null,
+                                         salePrice : Double? = null,
+                                         discount : Float? = null,
+                                         uniCode : String? = null) : Boolean
+
+    suspend fun getStorageProductData(productIds : List<Long>) : List<StorageProductDataEntity>
 
     suspend fun getStorageProductData(productId: Long) : StorageProductDataEntity?
 
